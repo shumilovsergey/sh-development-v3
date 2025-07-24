@@ -658,7 +658,26 @@ body {
     }
     
     .skill-category {
-        padding: 1.5rem;
+        padding: 1.5rem 0;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .skill-category:last-child {
+        border-bottom: none;
+    }
+    
+    .skill-category:hover {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .skill-category:last-child:hover {
+        border-bottom: none;
     }
     
     .category-title {
@@ -669,6 +688,59 @@ body {
     .skill-tag {
         font-size: 0.85rem;
         padding: 0.5rem 1rem;
+    }
+    
+    /* Remove frames on mobile - cleaner look */
+    .about-details .responsibility-section {
+        background: transparent;
+        border-radius: 0;
+        padding: 0.5rem 0;
+        border: none;
+    }
+    
+    .responsibility-section {
+        background: transparent;
+        border-radius: 0;
+        padding: 1rem 0;
+        border-left: none;
+        border: none;
+    }
+    
+    .experience-card {
+        background: transparent;
+        border: none;
+        padding: 1.5rem 0;
+        margin-right: 0;
+    }
+    
+    .experience-card.active {
+        background: transparent;
+        border: none;
+    }
+    
+    .project-card .detail-section {
+        background: transparent;
+        border-radius: 0;
+        padding: 0.5rem 0;
+        border-left: none;
+        border: none;
+    }
+    
+    .project-card {
+        background: transparent;
+        border: none;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .project-card:last-child {
+        border-bottom: none;
+    }
+    
+    .project-card:hover {
+        background: transparent;
+        transform: none;
+        box-shadow: none;
     }
     
 }
