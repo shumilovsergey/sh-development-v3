@@ -641,11 +641,11 @@ body {
     }
     
     .main-content {
-        padding: 1rem;
+        padding: 1rem 0;
     }
     
     .glass-section {
-        padding: 2rem;
+        padding: 2rem 1rem;
     }
     
     .social-buttons {

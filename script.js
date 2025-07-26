@@ -6,6 +6,13 @@ class ExperienceCarousel {
         this.prevBtn = document.querySelector('.prev-btn');
         this.nextBtn = document.querySelector('.next-btn');
         this.currentIndex = 0;
+        
+        // Touch handling properties
+        this.startX = 0;
+        this.startY = 0;
+        this.currentX = 0;
+        this.currentY = 0;
+        this.isDragging = false;
 
         this.init();
     }
@@ -13,6 +20,13 @@ class ExperienceCarousel {
     init() {
         this.prevBtn.addEventListener('click', () => this.prevSlide());
         this.nextBtn.addEventListener('click', () => this.nextSlide());
+
+        // Add touch events for mobile swipe
+        if (window.innerWidth <= 768) {
+            this.track.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
+            this.track.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+            this.track.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: true });
+        }
 
         // Set initial carousel state (hides prev button)
         this.updateCarousel();
@@ -44,6 +58,51 @@ class ExperienceCarousel {
             this.updateCarousel();
         }
     }
+
+    handleTouchStart(e) {
+        this.startX = e.touches[0].clientX;
+        this.startY = e.touches[0].clientY;
+        this.isDragging = true;
+    }
+
+    handleTouchMove(e) {
+        if (!this.isDragging) return;
+        
+        this.currentX = e.touches[0].clientX;
+        this.currentY = e.touches[0].clientY;
+        
+        // Prevent vertical scrolling if horizontal swipe is dominant
+        const deltaX = Math.abs(this.currentX - this.startX);
+        const deltaY = Math.abs(this.currentY - this.startY);
+        
+        if (deltaX > deltaY && deltaX > 10) {
+            e.preventDefault();
+        }
+    }
+
+    handleTouchEnd(e) {
+        if (!this.isDragging) return;
+        
+        const deltaX = this.currentX - this.startX;
+        const deltaY = Math.abs(this.currentY - this.startY);
+        
+        // Only trigger swipe if horizontal movement is significant and greater than vertical
+        if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > deltaY) {
+            if (deltaX > 0) {
+                // Swipe right - go to previous slide
+                this.prevSlide();
+            } else {
+                // Swipe left - go to next slide
+                this.nextSlide();
+            }
+        }
+        
+        this.isDragging = false;
+        this.startX = 0;
+        this.startY = 0;
+        this.currentX = 0;
+        this.currentY = 0;
+    }
 }
 
 
@@ -63,8 +122,8 @@ class SkillsInteraction {
             tag.addEventListener('mouseleave', (e) => this.handleSkillLeave(e));
         });
         
-        // Start spontaneous blinking
-        this.startSpontaneousBlinking();
+        // Start spontaneous blinking - DISABLED for performance
+        // this.startSpontaneousBlinking();
     }
     
     startSpontaneousBlinking() {
@@ -230,8 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize skills interaction
     new SkillsInteraction();
     
-    // Initialize scroll animations
-    new AnimationObserver();
+    // Initialize scroll animations - DISABLED
+    // new AnimationObserver();
     
     // Initialize parallax effects
     new ParallaxEffect();
@@ -246,10 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Handle window resize
 window.addEventListener('resize', () => {
-    // Recalculate positions if needed
-    const carousel = document.querySelector('.carousel-track');
-    if (carousel) {
-        carousel.style.transform = 'translateX(0%)';
+    // Only reset carousel on desktop, preserve state on mobile
+    if (window.innerWidth > 768) {
+        const carousel = document.querySelector('.carousel-track');
+        if (carousel) {
+            carousel.style.transform = 'translateX(0%)';
+        }
     }
 });
 
