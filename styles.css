@@ -641,11 +641,11 @@ body {
     }
     
     .main-content {
-        padding: 1rem 0;
+        padding: 1rem 1.5rem;
     }
     
     .glass-section {
-        padding: 2rem 1rem;
+        padding: 2rem 1.5rem;
     }
     
     .social-buttons {
@@ -658,7 +658,7 @@ body {
     }
     
     .skill-category {
-        padding: 1.5rem 0;
+        padding: 1.5rem 1rem;
         background: transparent;
         border: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -694,14 +694,14 @@ body {
     .about-details .responsibility-section {
         background: transparent;
         border-radius: 0;
-        padding: 0.5rem 0;
+        padding: 0.5rem 1rem;
         border: none;
     }
     
     .responsibility-section {
         background: transparent;
         border-radius: 0;
-        padding: 1rem 0;
+        padding: 1rem;
         border-left: none;
         border: none;
     }
@@ -709,7 +709,7 @@ body {
     .experience-card {
         background: transparent;
         border: none;
-        padding: 1.5rem 0;
+        padding: 1.5rem 1rem;
         margin-right: 0;
     }
     
@@ -718,10 +718,23 @@ body {
         border: none;
     }
     
+    /* Improve content distribution on mobile */
+    .job-role {
+        display: none;
+    }
+    
+    .job-description {
+        margin-bottom: 1rem;
+    }
+    
+    .responsibilities {
+        gap: 1rem;
+    }
+    
     .project-card .detail-section {
         background: transparent;
         border-radius: 0;
-        padding: 0.5rem 0;
+        padding: 0.5rem 1rem;
         border-left: none;
         border: none;
     }
@@ -729,7 +742,7 @@ body {
     .project-card {
         background: transparent;
         border: none;
-        padding: 1.5rem 0;
+        padding: 1.5rem 1rem;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
