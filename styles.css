@@ -641,11 +641,14 @@ body {
     }
     
     .main-content {
-        padding: 1rem 1.5rem;
+        padding: 1rem 0;
     }
     
     .glass-section {
         padding: 2rem 1.5rem;
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 0;
     }
     
     .social-buttons {
@@ -729,6 +732,26 @@ body {
     
     .responsibilities {
         gap: 1rem;
+    }
+    
+    /* Center job title and company buttons on mobile */
+    .experience-card .job-title {
+        text-align: center;
+    }
+    
+    .experience-card .company-btn {
+        display: inline-block;
+        margin: 0 0.5rem 1rem 0.5rem;
+    }
+    
+    /* Center the company buttons by centering their parent container */
+    .experience-card {
+        text-align: center;
+    }
+    
+    /* Reset text alignment for responsibility sections */
+    .experience-card .responsibilities {
+        text-align: left;
     }
     
     .project-card .detail-section {
