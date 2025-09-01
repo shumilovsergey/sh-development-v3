@@ -106,94 +106,11 @@ class ExperienceCarousel {
 }
 
 
-// Skills interaction
+// Skills interaction - simplified for performance
 class SkillsInteraction {
     constructor() {
-        this.skillTags = document.querySelectorAll('.skill-tag');
-        this.skillCategories = document.querySelectorAll('.skill-category');
-        this.isBlinking = false;
-        this.init();
-    }
-    
-    init() {
-        this.skillTags.forEach(tag => {
-            tag.addEventListener('click', (e) => this.handleSkillClick(e));
-            tag.addEventListener('mouseenter', (e) => this.handleSkillHover(e));
-            tag.addEventListener('mouseleave', (e) => this.handleSkillLeave(e));
-        });
-        
-        // Start spontaneous blinking - DISABLED for performance
-        // this.startSpontaneousBlinking();
-    }
-    
-    startSpontaneousBlinking() {
-        const triggerBlink = () => {
-            if (!this.isBlinking && this.skillTags.length > 0) {
-                this.isBlinking = true;
-                
-                // Select random skill tag
-                const randomIndex = Math.floor(Math.random() * this.skillTags.length);
-                const randomTag = this.skillTags[randomIndex];
-                
-                // Add blink animation
-                randomTag.classList.add('spontaneous-blink');
-                
-                // Remove animation after it completes
-                setTimeout(() => {
-                    randomTag.classList.remove('spontaneous-blink');
-                    this.isBlinking = false;
-                }, 1000);
-            }
-            
-            // Schedule next blink (random interval between 1.5-4 seconds)
-            const nextBlinkDelay = Math.random() * 2500 + 1500;
-            setTimeout(triggerBlink, nextBlinkDelay);
-        };
-        
-        // Start first blink after initial delay
-        const initialDelay = Math.random() * 1000 + 500;
-        setTimeout(triggerBlink, initialDelay);
-    }
-    
-    handleSkillClick(e) {
-        const skill = e.currentTarget;
-        const skillName = skill.textContent.trim();
-        
-        // Add click animation
-        skill.style.transform = 'translateY(0) scale(0.95)';
-        setTimeout(() => {
-            skill.style.transform = '';
-        }, 150);
-        
-        console.log(`Clicked on skill: ${skillName}`);
-    }
-    
-    handleSkillHover(e) {
-        const skill = e.currentTarget;
-        const category = skill.classList[1]; // systems, development, cloud, tools
-        
-        // Highlight other skills in the same category
-        const relatedSkills = document.querySelectorAll(`.skill-tag.${category}`);
-        relatedSkills.forEach(relatedSkill => {
-            if (relatedSkill !== skill) {
-                relatedSkill.style.opacity = '0.6';
-                relatedSkill.style.transform = 'translateY(-1px) scale(1.02)';
-            }
-        });
-    }
-    
-    handleSkillLeave(e) {
-        const skill = e.currentTarget;
-        const category = skill.classList[1];
-        
-        // Remove highlight from related skills
-        const relatedSkills = document.querySelectorAll(`.skill-tag.${category}`);
-        relatedSkills.forEach(relatedSkill => {
-            if (relatedSkill !== skill) {
-                relatedSkill.style.opacity = '';
-                relatedSkill.style.transform = '';
-            }
-        });
+        // No additional JavaScript interactions needed
+        // All styling handled by CSS hover states
     }
 }
 

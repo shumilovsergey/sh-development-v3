@@ -560,32 +560,14 @@ body {
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
 }
 
-.skill-tag::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s ease;
-}
 
 .skill-tag:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.skill-tag:hover::before {
-    left: 100%;
-}
 
 .skill-tag.systems {
     border-left: 3px solid rgba(255, 255, 255, 0.3);
@@ -603,27 +585,7 @@ body {
     border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
-.skill-tag:active {
-    transform: translateY(0) scale(0.98);
-}
 
-.skill-tag.spontaneous-blink {
-    animation: spontaneousBlink 1s ease-in-out;
-}
-
-@keyframes spontaneousBlink {
-    0%, 100% {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.1);
-        transform: translateY(0) scale(1);
-    }
-    50% {
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(255, 255, 255, 0.25);
-        transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    }
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
