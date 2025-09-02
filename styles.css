@@ -496,6 +496,14 @@ body {
     display: inline-block;
     transition: all 0.3s ease;
     font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.project-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .project-btn:hover {
@@ -784,30 +792,46 @@ body {
 /* Notification popup */
 .notification-popup {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: #ffffff;
-    padding: 1rem 1.5rem;
-    border-radius: 15px;
+    padding: 2rem 2.5rem;
+    border-radius: 20px;
     font-weight: 600;
-    z-index: 1000;
-    transform: translateX(400px);
+    font-size: 1.1rem;
+    z-index: 10000;
     opacity: 0;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    text-align: center;
+    max-width: 400px;
+    min-width: 300px;
 }
 
 .notification-popup.show {
-    transform: translateX(0);
+    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
 }
 
-.notification-popup::before {
+.notification-popup.success::before {
     content: '✓';
-    margin-right: 0.5rem;
+    display: block;
+    margin: 0 auto 1rem;
     color: #4ade80;
     font-weight: bold;
+    font-size: 2rem;
+}
+
+.notification-popup.error::before {
+    content: '⚠️';
+    display: block;
+    margin: 0 auto 1rem;
+    font-size: 2rem;
 }

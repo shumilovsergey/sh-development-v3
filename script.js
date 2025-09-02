@@ -246,6 +246,86 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Project health check configuration
+const projectHealthChecks = {
+    'blur': {
+        name: 'blur',
+        url: 'https://t.me/sh_blur_bot',
+        healthCheckUrl: 'blur.sh-development.ru'
+    },
+    'tgDrive': {
+        name: 'tgDrive', 
+        url: 'https://t.me/sh_tgdrive_bot',
+        healthCheckUrl: 'tgdrive-backend.sh-development.ru'
+    },
+    'wgetbash': {
+        name: 'wgetbash',
+        url: 'https://wgetbash.sh-development.ru/',
+        healthCheckUrl: 'wgetbash.sh-development.ru'
+    },
+    'belsi': {
+        name: 'belsi',
+        url: 'https://t.me/Belsi_kids_bot', 
+        healthCheckUrl: 'belsi-backend.sh-development.ru'
+    }
+};
+
+// Check project availability
+async function checkProjectAvailability(projectKey) {
+    const project = projectHealthChecks[projectKey];
+    if (!project) return false;
+    
+    try {
+        const response = await fetch(project.healthCheckUrl, {
+            method: 'GET',
+            mode: 'no-cors', // For external APIs that don't support CORS
+            timeout: 5000
+        });
+        
+        // For no-cors mode, we can't check response status
+        // So we assume if no error is thrown, the service is available
+        return true;
+    } catch (error) {
+        console.log(`Health check failed for ${project.name}:`, error);
+        return false;
+    }
+}
+
+// Handle project button click with availability check
+async function handleProjectClick(event, projectKey) {
+    event.preventDefault();
+    
+    const project = projectHealthChecks[projectKey];
+    if (!project) {
+        showNotification('Проект временно недоступен, попробуйте позже', 'error');
+        return;
+    }
+    
+    // Show loading state
+    const button = event.target;
+    const originalText = button.textContent;
+    button.textContent = 'Проверяю...';
+    button.disabled = true;
+    
+    try {
+        const isAvailable = await checkProjectAvailability(projectKey);
+        
+        if (isAvailable) {
+            // Project is available, redirect
+            window.open(project.url, '_blank');
+        } else {
+            // Project is not available, show notification
+            showNotification('Проект временно недоступен, попробуйте позже', 'error');
+        }
+    } catch (error) {
+        showNotification('Проект временно недоступен, попробуйте позже', 'error');
+    } finally {
+        // Restore button state
+        button.textContent = originalText;
+        button.disabled = false;
+    }
+}
+
 // Email copy functionality
 function copyEmail() {
     const email = 'wumilovsergey@gmail.com';
@@ -266,7 +346,7 @@ function copyEmail() {
 }
 
 // Notification popup
-function showNotification(message) {
+function showNotification(message, type = 'success') {
     // Remove existing notification if any
     const existingNotification = document.querySelector('.notification-popup');
     if (existingNotification) {
@@ -275,7 +355,7 @@ function showNotification(message) {
     
     // Create notification element
     const notification = document.createElement('div');
-    notification.className = 'notification-popup';
+    notification.className = `notification-popup ${type}`;
     notification.textContent = message;
     document.body.appendChild(notification);
     
@@ -284,11 +364,11 @@ function showNotification(message) {
         notification.classList.add('show');
     }, 100);
     
-    // Hide notification after 3 seconds
+    // Hide notification after 4 seconds
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
             notification.remove();
-        }, 300);
-    }, 3000);
+        }, 400);
+    }, 4000);
 }
