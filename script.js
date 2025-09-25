@@ -263,10 +263,10 @@ const projectHealthChecks = {
         url: 'https://wgetbash.sh-development.ru/',
         healthCheckUrl: 'wgetbash.sh-development.ru'
     },
-    'belsi': {
-        name: 'belsi',
-        url: 'https://t.me/Belsi_kids_bot', 
-        healthCheckUrl: 'belsi-backend.sh-development.ru'
+    'zhenshen-tattoo': {
+        name: 'zhenshen-tattoo',
+        url: 'https://zhenshen-tattoo.ru/',
+        healthCheckUrl: 'zhenshen-tattoo.ru'
     }
 };
 
