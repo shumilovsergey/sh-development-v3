@@ -1,3 +1,5 @@
 .env
 CLAUDE.md
 backup
+.claude
+.vscode
