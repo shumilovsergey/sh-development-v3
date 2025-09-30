@@ -13,7 +13,7 @@ const translations = {
 
         // Experience cards
         job1Title: "Старший системный администратор",
-        job1Date: "[ Декабрь 2024  /  по настоящее время ]",
+        job1Date: "[ Декабрь 2024  /  Сентябрь 2025 ]",
         job1Section1Title: "Инфраструктура и виртуализация",
         job1Section1Tasks: [
             "Управление кластером из 14 нод и 100+ ВМ",
@@ -115,6 +115,14 @@ const translations = {
         skillCategory3: "Облака",
         skillCategory4: "Разработка",
 
+        // Skills (only Russian-specific ones)
+        migrations: "Миграции",
+        backups: "Бэкапы",
+        incidentReports: "Отчеты по инцидентам",
+        knowledgeBase: "База знаний",
+        asvScanning: "ASV сканирование",
+        apiIntegrations: "API интеграции",
+
         // Notifications
         emailCopied: "Email скопирован в буфер обмена!"
     },
@@ -122,8 +130,8 @@ const translations = {
     en: {
         name: "Sergey Shumilov",
         jobTitle: "System Administrator / DevOps",
-        aboutText1: "I follow the principle of conscious technology choice. Every decision must be justified, transparent, and fit for purpose. No excessive complexity, but without compromising reliability.",
-        aboutText2: "My goal is to build resilient and understandable systems, focusing on the real needs of the project and team.",
+        aboutText1: "I choose technologies on purpose, not by hype — every decision should be clear, justified, and fit for the job. I keep things simple whenever possible, but never at the cost of reliability.",
+        aboutText2: "My focus is on building resilient, easy-to-understand systems that actually meet the needs of the project and the team.",
 
         // Section titles
         experienceTitle: "Career",
@@ -132,7 +140,7 @@ const translations = {
 
         // Experience cards
         job1Title: "Senior System Administrator",
-        job1Date: "[ December 2024 / Present ]",
+        job1Date: "[ December 2024 / September 2025 ]",
         job1Section1Title: "Infrastructure and Virtualization",
         job1Section1Tasks: [
             "Managing a cluster of 14 nodes and 100+ VMs",
@@ -233,6 +241,14 @@ const translations = {
         skillCategory2: "Virtualization",
         skillCategory3: "Cloud",
         skillCategory4: "Development",
+
+        // Skills (only Russian-specific ones)
+        migrations: "Migrations",
+        backups: "Backups",
+        incidentReports: "Incident reports",
+        knowledgeBase: "Knowledge base",
+        asvScanning: "ASV scanning",
+        apiIntegrations: "API integrations",
 
         // Notifications
         emailCopied: "Email copied to clipboard!"
@@ -391,6 +407,14 @@ function applyTranslations(lang) {
     skillCategories[2].textContent = t.skillCategory3;
     skillCategories[3].textContent = t.skillCategory4;
 
+    // Update translatable skill tags
+    document.querySelectorAll('.skill-tag[data-translate]').forEach(tag => {
+        const key = tag.getAttribute('data-translate');
+        if (t[key]) {
+            tag.textContent = t[key];
+        }
+    });
+
     // Store current language for later use
     window.currentLang = lang;
     window.currentTranslations = t;
@@ -408,6 +432,15 @@ async function initLanguage() {
     const lang = await detectUserLanguage();
     applyTranslations(lang);
     console.log('🎉 Language system initialized!');
+
+    // Hide loading overlay
+    const loadingOverlay = document.getElementById('loading-overlay');
+    if (loadingOverlay) {
+        setTimeout(() => {
+            loadingOverlay.classList.add('hidden');
+            console.log('✅ Loading overlay hidden');
+        }, 300); // Small delay for smooth transition
+    }
 }
 
 // Carousel functionality
@@ -612,8 +645,22 @@ class ParallaxEffect {
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
+    // Hide main content during loading
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        mainContent.style.opacity = '0';
+        mainContent.style.visibility = 'hidden';
+    }
+
     // Initialize language first
     await initLanguage();
+
+    // Show main content after language is loaded
+    if (mainContent) {
+        mainContent.style.transition = 'opacity 0.5s ease, visibility 0.5s ease';
+        mainContent.style.opacity = '1';
+        mainContent.style.visibility = 'visible';
+    }
 
     // Initialize carousel
     new ExperienceCarousel();
@@ -626,13 +673,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize parallax effects
     new ParallaxEffect();
-
-    // Add loading animation
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-    }, 100);
 });
 
 // Handle window resize
