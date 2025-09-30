@@ -241,27 +241,75 @@ const translations = {
 
 // Detect user language based on location
 async function detectUserLanguage() {
+    console.log('🌍 Starting language detection...');
+
+    // Try cloudflare trace first (most reliable, no CORS issues)
     try {
-        // First try to get location via API
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
+        console.log('📡 Fetching location from Cloudflare...');
+        const response = await fetch('https://www.cloudflare.com/cdn-cgi/trace');
+        const text = await response.text();
+
+        // Parse the response (format: key=value\n)
+        const data = {};
+        text.split('\n').forEach(line => {
+            const [key, value] = line.split('=');
+            if (key && value) data[key] = value;
+        });
+
+        console.log('📍 Location data received:', {
+            country_code: data.loc,
+            ip: data.ip
+        });
 
         // If user is from Russia, use Russian
-        if (data.country_code === 'RU') {
+        if (data.loc === 'RU') {
+            console.log('✅ User is from Russia → Using Russian (ru)');
             return 'ru';
         }
 
         // For all other countries, use English
+        console.log('✅ User is from country code', data.loc, '→ Using English (en)');
         return 'en';
     } catch (error) {
-        // Fallback to browser language if API fails
-        const browserLang = navigator.language || navigator.userLanguage;
-        return browserLang.startsWith('ru') ? 'ru' : 'en';
+        console.error('❌ Cloudflare geolocation failed:', error);
+
+        // Try ipapi.co as fallback
+        try {
+            console.log('📡 Trying fallback API (ipapi.co)...');
+            const response = await fetch('https://ipapi.co/json/');
+            const data = await response.json();
+
+            console.log('📍 Location data received:', {
+                country: data.country_name,
+                country_code: data.country_code,
+                city: data.city
+            });
+
+            if (data.country_code === 'RU') {
+                console.log('✅ User is from Russia → Using Russian (ru)');
+                return 'ru';
+            }
+
+            console.log('✅ User is from', data.country_name, '→ Using English (en)');
+            return 'en';
+        } catch (error2) {
+            console.error('❌ All geolocation APIs failed:', error2);
+
+            // Final fallback to browser language
+            const browserLang = navigator.language || navigator.userLanguage;
+            console.log('🔄 Falling back to browser language:', browserLang);
+
+            const detectedLang = browserLang.startsWith('ru') ? 'ru' : 'en';
+            console.log('✅ Using language:', detectedLang);
+
+            return detectedLang;
+        }
     }
 }
 
 // Apply translations to the page
 function applyTranslations(lang) {
+    console.log('🔄 Applying translations for language:', lang);
     const t = translations[lang];
 
     // Update basic info
@@ -349,12 +397,17 @@ function applyTranslations(lang) {
 
     // Update page language attribute
     document.documentElement.lang = lang;
+
+    console.log('✅ Translations applied successfully!');
+    console.log('📄 Page language set to:', lang);
 }
 
 // Initialize language on page load
 async function initLanguage() {
+    console.log('🚀 Initializing language system...');
     const lang = await detectUserLanguage();
     applyTranslations(lang);
+    console.log('🎉 Language system initialized!');
 }
 
 // Carousel functionality
