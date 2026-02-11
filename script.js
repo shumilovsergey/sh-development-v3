@@ -706,22 +706,22 @@ const projectHealthChecks = {
     'blur': {
         name: 'blur',
         url: 'https://t.me/sh_blur_bot',
-        healthCheckUrl: 'blur.sh-development.ru'
+        healthCheckUrl: 'https://shumilovsergey.github.io/blur-3'
     },
     'tgDrive': {
-        name: 'tgDrive', 
+        name: 'tgDrive',
         url: 'https://t.me/sh_tgdrive_bot',
-        healthCheckUrl: 'tgdrive-backend.sh-development.ru'
+        healthCheckUrl: 'https://tgdrive-backend.sh-development.ru'
     },
     'wgetbash': {
         name: 'wgetbash',
         url: 'https://wgetbash.sh-development.ru/',
-        healthCheckUrl: 'wgetbash.sh-development.ru'
+        healthCheckUrl: 'https://wgetbash.sh-development.ru'
     },
     'zhenshen-tattoo': {
         name: 'zhenshen-tattoo',
         url: 'https://zhenshen-tattoo.ru/',
-        healthCheckUrl: 'zhenshen-tattoo.ru'
+        healthCheckUrl: 'https://zhenshen-tattoo.ru'
     }
 };
 
@@ -729,20 +729,25 @@ const projectHealthChecks = {
 async function checkProjectAvailability(projectKey) {
     const project = projectHealthChecks[projectKey];
     if (!project) return false;
-    
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     try {
-        const response = await fetch(project.healthCheckUrl, {
-            method: 'GET',
-            mode: 'no-cors', // For external APIs that don't support CORS
-            timeout: 5000
+        await fetch(project.healthCheckUrl, {
+            method: 'HEAD',
+            mode: 'no-cors',
+            signal: controller.signal
         });
-        
-        // For no-cors mode, we can't check response status
-        // So we assume if no error is thrown, the service is available
+        // With no-cors + correct https:// URLs:
+        // - Server reachable → opaque response, no error → return true
+        // - Server unreachable (DNS fail, connection refused) → throws → return false
         return true;
     } catch (error) {
         console.log(`Health check failed for ${project.name}:`, error);
         return false;
+    } finally {
+        clearTimeout(timeoutId);
     }
 }
 
